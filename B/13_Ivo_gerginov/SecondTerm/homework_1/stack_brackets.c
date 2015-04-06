@@ -74,7 +74,7 @@ void push(struct stack_t *s, char value) {
 	if (s->top == s->size)
 		size_incr(s);
 
-	s->data[s->top++] = value;
+	s->data[s->top] = value;
 }
 
 int pop(struct stack_t* s) {
@@ -90,71 +90,100 @@ int pop(struct stack_t* s) {
 int main()
 {
 	struct stack_t brackets;
+	init(&brackets);
 	char brac_str[50];
 	int cntr, max; 
 
 	printf("Enter brackets expression:\n");
 	scanf("%s", brac_str);
 	max = strlen(brac_str);
-	printf("%d", max);
 
 	for(cntr = 0;cntr < max;cntr++)
 	{
 		switch (brac_str[cntr])
 		{
-			case '{' || '[' || '(':
+			case '{':
+			case '[':
+			case '(':
 			{
 				if(cntr == max - 1)
-					printf("Invalid expression!!! Cannot end with opening bracket!");
+				{
+					printf("Invalid expression!!! Cannot end with opening bracket!\n");
+					break;
+				}
 				else push(&brackets, brac_str[cntr]);
+				break;
 			}
 			case '}':
 			{
 				if(cntr == 0)
-					printf("Invalid expression!!! Cannot start with closing bracket!");
-				else 
+				{
+					printf("Invalid expression!!! Cannot start with closing bracket!\n");
+					break;
+				}
+				else
 				{
 					if(brackets.data[brackets.top] != '{')
-						printf("Invalid expression!!! Missing {!");
+						
+							
+							{
+								printf("Invalid expression!!!\n");
+								break;
+							}
 					else
 					{ 
 						pop(&brackets);
 						if (cntr == max - 1)
-							printf("Expression is valid.");
+							printf("Expression is valid.\n");
 					}
 				}
+				break;
 			}
 			case ')':
 			{	
 				if(cntr == 0)
-					printf("Invalid expression!!! Cannot start with closing bracket!");
+				{
+					printf("Invalid expression!!! Cannot start with closing bracket!\n");
+					break;
+				}
 				else 
 				{
 					if(brackets.data[brackets.top] != '(')
-						printf("Invalid expression!!! Missing (!");
+					{
+						printf("Invalid expression!!!\n");
+						break;
+					}
 					else
 					{ 
 						pop(&brackets);
 						if (cntr == max - 1)
-							printf("Expression is valid.");
+							printf("Expression is valid.\n");
 					}
 				}
+				break;
 			}
 			case ']':
 			{
 				if(cntr == 0)
-					printf("Invalid expression!!! Cannot start with closing bracket!");
+				{
+					printf("Invalid expression!!! Cannot start with closing bracket!\n");
+					break;
+				}
 				else 
 				{
 					if(brackets.data[brackets.top] != '[')
-						printf("Invalid expression!!! Missing [!");
+					{
+						printf("Invalid expression!!!\n");
+						break;
+					}
 					else
 					{ 
 						pop(&brackets);
 						if (cntr == max - 1)
-							printf("Expression is valid.");
+							printf("Expression is valid.\n");
 					}
 				}
+				break;
 			}
 		}
 	}
